@@ -1,23 +1,38 @@
 #include <iostream>
 #include "stock00.h"
 
-void Stock::acquire(const std::string & co, long n, double par)
+
+Stock::Stock()
 {
+	std::cout << "wywolano konstruktor  ";
+	company = "bez nazwy";
+	shares = 0;
+	shares_val = 0;
+	total_val = 0;
+}
+Stock::Stock(const std::string &co, long n, double pr)
+{
+	std::cout << "wywolano konstruktor 2 z arg: " << co << std::endl;
 	company = co;
-	if (n < 0)
+	if (n<0)
 	{
-		std::cout << "liczba nie moze byc ujemna!!!!!"
-			<< "\nustawiam liczbe udzialow firmy " << company << " na 0";
-		shares = 0;
+		std::cout << "liczba udzialow nie moze byc ujemna "
+			<< "ustawiam liczbe udzialow w " << company << " na 0 zl";
 	}
 	else
 	{
 		shares = n;
-
+		shares_val = pr;
+		set_tot();
 	}
-	shares_val = par;
-	set_tot();
 }
+
+
+Stock::~Stock()
+{
+	std::cout << "do widzenia";
+}
+
 
 void Stock::buy(long num, double price)
 {
