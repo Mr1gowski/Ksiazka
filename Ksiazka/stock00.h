@@ -1,30 +1,25 @@
 #pragma once
 #ifndef  STOCK00_H_
 #define STOCK00_H_
-#include <string>
+typedef unsigned long item;
 
-class Stock
+class Stack
 {
 public:
-	void buy(long num, double price);
-	void update(double price);
-	void sell(long num, double price);
-	void show();
-	Stock();
-	Stock(const std::string &co = "BLAD", long no = 0.0, double pro = 0.0);
-	~Stock();
-
-
+	Stack();;
+	bool isempty() const;
+	bool isfull() const;
+	//zwraca false jesli stos jest pelen
+	bool push(const item &item);
+	//zwraca false jesli stos jest pusty
+	bool pop(item &item);
 
 private:
-	std::string company;
-	long shares;
-	double shares_val;
-	double total_val;
-	void set_tot() { total_val = shares * shares_val; }
+	enum { MAX = 10 };
+	item items[MAX];
+	int top;
 
 
-	
 };
 
 
