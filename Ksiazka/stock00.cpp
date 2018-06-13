@@ -2,39 +2,20 @@
 #include "stock00.h"
 
 
-Stack::Stack()
+void Account::show()
 {
-	top = 0;
+	std::cout << "nazwisko: " << nazwisko << ", ";
+	std::cout << "nr konta: " << nrkonta << ", ";
+	std::cout << "saldo konta: " << saldo << ".\n";
 }
 
-bool Stack::isempty() const
+void Account::depozyt(double dep)
 {
-	return top == 0;
+	saldo += dep;
 }
 
-bool Stack::isfull() const
+void Account::wyjmij(double dep)
 {
-	return top == MAX;
+	saldo -= dep;
 }
 
-bool Stack::push(const item & item)
-{
-	if (top < MAX)
-	{
-		items[top++] = item;
-		return true;
-	}
-	else
-		return false;
-}
-
-bool Stack::pop( item &item)
-{
-	if (top > 0)
-	{
-		item = items[--top];
-		return true;
-	}
-	else
-		return false;
-}

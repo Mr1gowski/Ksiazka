@@ -1,27 +1,20 @@
-#pragma once
-#ifndef  STOCK00_H_
-#define STOCK00_H_
-typedef unsigned long item;
+#include <cstring>
 
-class Stack
+class Account
 {
 public:
-	Stack();;
-	bool isempty() const;
-	bool isfull() const;
-	//zwraca false jesli stos jest pelen
-	bool push(const item &item);
-	//zwraca false jesli stos jest pusty
-	bool pop(item &item);
+	Account();
+	Account(const char *klient, const int *nm, const double saldo = 0.0);
+	void show(void);
+	void depozyt(double dep);
+	void wyjmij(double dep);
 
+	
 private:
-	enum { MAX = 10 };
-	item items[MAX];
-	int top;
 
+	char nazwisko[40];
+	int nrkonta;
+	double saldo;
 
 };
 
-
-
-#endif //  STOCK00_H_
