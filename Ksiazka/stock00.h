@@ -1,28 +1,20 @@
 #include <cstring>
 
-class Account
+class Person
 {
 public:
-	Account();
-	Account(const char *klient, const char *nm, const double sal)
-	{
-		strncpy(nazwisko, klient, 39);
-		nazwisko[39] = '\0';
-		strncpy(nrkonta, nm, 24);
-		nrkonta[24] = '\0';
-		saldo = sal;
+	Person() { lname = "", fname[0] = '\0'; }
+	Person(const std::string &ln, const char*fn = "hej ty");
 
-	}
-	void show(void);
-	void depozyt(double dep);
-	void wyjmij(double dep);
-
+	void Show() const;
+	void formalShow() const;
 	
 private:
 
-	char nazwisko[40];
-	char nrkonta[25];
-	double saldo;
+	static const int LIMIT = 256;
+	std::string lname;
+	char fname[LIMIT];
+
 
 };
 

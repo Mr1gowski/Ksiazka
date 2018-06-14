@@ -1,21 +1,14 @@
 #include <iostream>
 #include "stock00.h"
 
-
-void Account::show()
+using std::cout;
+using std::cin;
+using std::string;
+using std::endl;
+void Person::Show() const
 {
-	std::cout << "nazwisko: " << nazwisko << ", ";
-	std::cout << "nr konta: " << nrkonta << ", ";
-	std::cout << "saldo konta: " << saldo << ".\n";
-}
+	cout << lname << endl;
+	cout << fname << endl;
 
-void Account::depozyt(double dep)
-{
-	saldo += dep;
-}
-
-void Account::wyjmij(double dep)
-{
-	saldo -= dep;
 }
 
