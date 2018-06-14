@@ -4,7 +4,15 @@ class Account
 {
 public:
 	Account();
-	Account(const char *klient, const int *nm, const double saldo = 0.0);
+	Account(const char *klient, const char *nm, const double sal)
+	{
+		strncpy(nazwisko, klient, 39);
+		nazwisko[39] = '\0';
+		strncpy(nrkonta, nm, 24);
+		nrkonta[24] = '\0';
+		saldo = sal;
+
+	}
 	void show(void);
 	void depozyt(double dep);
 	void wyjmij(double dep);
@@ -13,7 +21,7 @@ public:
 private:
 
 	char nazwisko[40];
-	int nrkonta;
+	char nrkonta[25];
 	double saldo;
 
 };
