@@ -6,17 +6,20 @@ typedef unsigned long item;
 class Stack
 {
 public:
-	Stack();;
+	Stack();
 	bool isempty() const;
 	bool isfull() const;
+
+	
 	//zwraca false jesli stos jest pelen
-	bool push(const item &item);
+	bool push(  cus &test );
 	//zwraca false jesli stos jest pusty
-	bool pop(item &item);
+	bool pop( cus &test);
+	
 
 private:
 	enum { MAX = 10 };
-	item items[MAX];
+	cus test[MAX];
 	int top;
 
 

@@ -17,10 +17,11 @@ bool Stack::isfull() const
 	return top == MAX;
 }
 
-bool Stack::push(const item & item)
+bool Stack::push(cus & test)
 {
 	if (top < MAX)
 	{
+		name = 
 		items[top++] = item;
 		return true;
 	}
@@ -28,7 +29,7 @@ bool Stack::push(const item & item)
 		return false;
 }
 
-bool Stack::pop( item &item)
+bool Stack::pop( cus & test)
 {
 	if (top > 0)
 	{
