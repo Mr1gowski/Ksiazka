@@ -1,7 +1,9 @@
 #pragma once
+#include <string>
 #ifndef  STOCK00_H_
 #define STOCK00_H_
-typedef struct customer { char name[40]; double payment; };
+typedef struct customer { std::string name; double payment; };
+
 
 class Stack
 {
@@ -14,7 +16,7 @@ public:
 	//zwraca false jesli stos jest pelen
 	bool push( const customer &test );
 	//zwraca false jesli stos jest pusty
-	bool pop(const customer &test);
+	bool pop(  customer &test);
 	
 
 private:

@@ -31,10 +31,11 @@ bool Stack::push(const customer &test)
 		return false;
 }
 
-bool Stack::pop(const customer &test)
+bool Stack::pop( customer &test)
 {
 	if (top > 0)
 	{
+		
 		--top;
 		test.name = tests[top].name;
 		test.payment = tests[top].payment;
