@@ -17,23 +17,28 @@ bool Stack::isfull() const
 	return top == MAX;
 }
 
-bool Stack::push(cus & test)
+bool Stack::push(const customer &test)
 {
 	if (top < MAX)
 	{
-		name = 
-		items[top++] = item;
+		top++;
+		tests[top].name = test.name;
+		tests[top].payment = test.payment;
+		total += test.payment;
 		return true;
 	}
 	else
 		return false;
 }
 
-bool Stack::pop( cus & test)
+bool Stack::pop(const customer &test)
 {
 	if (top > 0)
 	{
-		item = items[--top];
+		--top;
+		test.name = tests[top].name;
+		test.payment = tests[top].payment;
+
 		return true;
 	}
 	else
