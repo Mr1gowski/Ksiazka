@@ -21,10 +21,11 @@ bool Stack::push(const customer &test)
 {
 	if (top < MAX)
 	{
-		top++;
-		tests[top].name = test.name;
-		tests[top].payment = test.payment;
+		
+		tests[top+1].name = test.name;
+		tests[top+1].payment = test.payment;
 		total += test.payment;
+		top++;
 		return true;
 	}
 	else
@@ -37,8 +38,8 @@ bool Stack::pop( customer &test)
 	{
 		
 		--top;
-		test.name = tests[top].name;
-		test.payment = tests[top].payment;
+		test.name = tests[top+1].name;
+		test.payment = tests[top+1].payment;
 
 		return true;
 	}
