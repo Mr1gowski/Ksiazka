@@ -2,47 +2,26 @@
 #include "stock00.h"
 
 
-Stack::Stack()
+Lista::Lista()
 {
-	top = 0;
+	sytosc = 50;
+	imie = "Plorga";
+	
 }
 
-bool Stack::isempty() const
+void Lista::i()
 {
-	return top == 0;
+	std::cout << "podaj imie"<<std::endl;
+	std::cin >> imie;
+}
+void Lista::show() const
+{
+	std::cout << imie << std::endl;
+	std::cout << sytosc << std::endl;
 }
 
-bool Stack::isfull() const
+int Lista::change(int a)
 {
-	return top == MAX;
-}
-
-bool Stack::push(const customer &test)
-{
-	if (top < MAX)
-	{
-		
-		tests[top+1].name = test.name;
-		tests[top+1].payment = test.payment;
-		total += test.payment;
-		top++;
-		return true;
-	}
-	else
-		return false;
-}
-
-bool Stack::pop( customer &test)
-{
-	if (top > 0)
-	{
-		
-		--top;
-		test.name = tests[top+1].name;
-		test.payment = tests[top+1].payment;
-
-		return true;
-	}
-	else
-		return false;
+	sytosc = a;
+	return 0;
 }
