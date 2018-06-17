@@ -1,32 +1,34 @@
 #pragma once
 #include <string>
-#ifndef  STOCK00_H_
-#define STOCK00_H_
-typedef struct customer { std::string name; double payment; };
 
+#ifndef  MYTIEM_H_
+#define MYTIME_H_
 
-class Stack
+#include <iostream>
+using std::ostream;
+
+class Time
 {
 public:
-	Stack();
-	bool isempty() const;
-	bool isfull() const;
-    double long total = 0;
-	
-	//zwraca false jesli stos jest pelen
-	bool push( const customer &test );
-	//zwraca false jesli stos jest pusty
-	bool pop(  customer &test);
-	
+	Time();
+	Time(int h, int m = 0);
+	void admin(int m);
+	void adhr(int h);
+	void reset(int h = 0, int m = 0);
+	Time operator+(const Time &t)const;
+	Time operator-(const Time &t)const;
+	Time operator*(double m)const;
+	friend Time operator*(double m, const Time &t)
+	{	return t * m;  }
+
+	friend ostream & operator<<(ostream & os,const Time &t);
 
 private:
-	enum { MAX = 10 };
-	customer tests[MAX];
-	int top;
-
+	int hours;
+	int minutes;
 
 };
 
 
 
-#endif //  STOCK00_H_
+#endif //  MYTIME_H_

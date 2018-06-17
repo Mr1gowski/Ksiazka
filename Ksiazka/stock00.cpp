@@ -2,47 +2,70 @@
 #include "stock00.h"
 
 
-Stack::Stack()
+Time::Time()
 {
-	top = 0;
+	hours = minutes = 0;
 }
 
-bool Stack::isempty() const
+Time::Time(int h, int m)
 {
-	return top == 0;
+	hours = h;
+	minutes = m;
 }
 
-bool Stack::isfull() const
+void Time::admin(int m)
 {
-	return top == MAX;
+	minutes += m;
+	hours += minutes / 60;
+	minutes %= 60;
 }
 
-bool Stack::push(const customer &test)
+void Time::adhr(int h)
 {
-	if (top < MAX)
-	{
-		
-		tests[top+1].name = test.name;
-		tests[top+1].payment = test.payment;
-		total += test.payment;
-		top++;
-		return true;
-	}
-	else
-		return false;
+	hours += h;
 }
 
-bool Stack::pop( customer &test)
+void Time::reset(int h, int m)
 {
-	if (top > 0)
-	{
-		
-		--top;
-		test.name = tests[top+1].name;
-		test.payment = tests[top+1].payment;
-
-		return true;
-	}
-	else
-		return false;
+	hours = h;
+	minutes = m;
 }
+
+Time Time::operator+(const Time & t) const
+{
+	Time sum;
+	sum.minutes = minutes + t.minutes;
+	sum.hours = hours + t.hours + sum.minutes / 60;
+	sum.minutes %= 60;
+	return sum;
+}
+Time Time::operator-(const Time &t)const
+{
+	Time tiff;
+	int tot1, tot2;
+	tot1 = t.minutes + 60 * t.hours;
+	tot2 = minutes + 60 * hours;
+	tiff.minutes=(tot1 - tot2) % 60;
+	tiff.hours = (tot1 - tot2) / 60;
+	return tiff;
+}
+
+Time Time::operator*(double mult) const
+{
+	Time result;
+	long totm = hours * mult * 60 + minutes * mult;
+	result.hours = totm / 60;
+	result.minutes = totm % 60;
+
+	return result;
+}
+
+
+
+
+ostream & operator<<(ostream & os, const Time &t)
+{
+	os << t.hours << " godzin, " << t.minutes << " minut.";
+	return os;
+}
+
