@@ -1,8 +1,8 @@
 #pragma once
-#ifndef  MYTIME_H_
-#define  MYTIME_H_
+#ifndef  STOCK00_H_
+#define  STOCK00_H_
 #include <iostream>
-namespace vector
+namespace VECTOR
 {
 
 	
@@ -10,6 +10,19 @@ namespace vector
 	{
 	public:
 		enum Mode {RECT,POL};
+		
+	private:
+		double x;
+		double y;
+		double mag;
+		double ang;
+		Mode mode;
+		void setx();
+		void sety();
+		void setmag();
+		void setang();
+	
+	public:
 		Vector();
 		Vector(double n1, double n2, Mode form = RECT);
 		void reset(double n1, double n2, Mode form = RECT);
@@ -30,13 +43,6 @@ namespace vector
 		friend std::ostream&
 			operator<<(std::ostream & os, const Vector & v);
 
-	private:
-		double x, y, mag, ang;
-		Mode mode;
-		void setx();
-		void sety();
-		void setmag();
-		void setang();
 	};
 }
 
