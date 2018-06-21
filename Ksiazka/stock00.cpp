@@ -1,153 +1,51 @@
 #pragma once
-#include <cmath>
+#include <iostream>
 #include "stock00.h"
-
-using std::sqrt;
-using std::sin;
-using std::cos;
-using std::atan;
-using std::atan2;
 using std::cout;
-
-namespace VECTOR
+Stone::Stone(double lbs)
 {
-	const double Rad_to_Reg = 45 / atan(1.0);
-
-	void Vector::setmag()
-	{
-		mag = sqrt(x*x + y * y);
-	}
-	void Vector::setang()
-	{
-		if (x == 0 && y == 0)
-			ang = 0;
-		else
-			ang = atan2(x, y);
-
-	}
-
-	void Vector::setx()
-	{
-		x = mag * cos(ang);
-	}
-
-	void Vector::sety()
-	{
-		y = mag * sin(ang);
-	}
-
-	Vector::Vector()
-	{
-		x = y = mag = ang = 0;
-	}
-
-	Vector::Vector(double n1, double n2, Mode form)
-	{
-		mode = form;
-		if (form = RECT)
-		{
-			x = n1;
-			y = n2;
-			setmag();
-			setang();
-		}
-		else if (form == POL)
-		{
-			mag = n1;
-			ang = n2/Rad_to_Reg;
-			setx();
-			sety();
-
-		}
-		else
-		{
-			cout << "niepoprawna wartosc trzeciego argumentu ";
-			cout << "zeruje wektor\n";
-			x = y = mag = ang = 0;
-			mode = RECT;
-		}
-	}
-
-	void Vector::reset(double n1, double n2, Mode form)
-	{
-
-		mode = form;
-		if (form == RECT)
-		{
-			x = n1;
-			y = n2;
-			setmag();
-			setang();
-		}
-		else if (form == POL)
-		{
-			mag = n1;
-			ang = n2 / Rad_to_Reg;
-			setx();
-			sety();
-		}
-
-		else
-		{
-			cout << "niepoprawna wartosc trzeciego argumentu ";
-			cout << "zeruje wektor\n";
-			x = y = mag = ang = 0;
-			mode = RECT;
-		}
-	}
-
-	Vector::~Vector()
-	{}
-	void Vector::polar_mode()
-	{
-		mode = POL;
-	}
-
-	void Vector::rect_mode()
-	{
-		mode = RECT;
-	}
-
-	Vector Vector::operator+(const Vector & b)const
-	{
-		return Vector(x + b.x, y + b.y);
-	}
-
-
-	Vector Vector::operator-(const Vector & b)const
-	{
-		return Vector(x - b.x, y - b.y);
-	}
-
-	Vector Vector::operator-()const
-	{
-		return Vector(-x, -y);
-	}
-
-	Vector Vector::operator*(double n)const
-	{
-		return Vector(n*x, n*y);
-	}
-
-
-	Vector operator*(double n, const Vector & a)
-	{
-		return Vector(a*n);
-	}
-
-	std::ostream & operator<<(std::ostream & os, const Vector & v)
-	{
-		if (v.mode == Vector::RECT)
-			os << "(x,y)=(" << v.x << "," << v.y << ")";
-		else if (v.mode == Vector::POL)
-		{
-			os << "(m.a) = (" << v.mag << ")";
-		}
-		else
-			os << "niepoprawny tryb reprezentacji wektora";
-		return os;
-	}
-
+	stone = int(lbs) / Lbs_per_stn;
+	pds_left = int(lbs) % Lbs_per_stn + lbs - int(lbs);
+	pounds = lbs;
 }
 
 
+
+Stone::Stone(int stn, double lbs)
+{
+	stone = stn;
+	pds_left = lbs;
+	pounds = stn * Lbs_per_stn + lbs;
+}
+
+Stone::Stone()
+{
+	stone = pounds = pds_left = 0;
+}
+
+Stone::~Stone()
+{}
+
+void Stone::show_stn() const
+{
+	cout << stone << " kamieni, " << pds_left << " funtow\n";
+}
+
+void Stone::show_lbs() const
+{
+	cout << pounds << " funtow\n";
+}
+
+Stone::operator int() const
+{
+	return int(pounds + 0.5);
+}
+
+Stone::operator double() const
+{
+	return pounds;
+}
+Stone operator*(double ls, Stone &s)
+{
+	return Stone(ls*s.pounds);
+}
