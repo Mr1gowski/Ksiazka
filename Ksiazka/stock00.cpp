@@ -1,153 +1,39 @@
-#pragma once
-#include <cmath>
 #include "stock00.h"
-
-using std::sqrt;
-using std::sin;
-using std::cos;
-using std::atan;
-using std::atan2;
+#include <cstring>
 using std::cout;
+using std::endl;
+int Stringbad::num_strings = 0;
 
-namespace VECTOR
-{
-	const double Rad_to_Reg = 45 / atan(1.0);
+using namespace std
 
-	void Vector::setmag()
+	Stringbad::Stringbad(const char* s)
 	{
-		mag = sqrt(x*x + y * y);
-	}
-	void Vector::setang()
-	{
-		if (x == 0 && y == 0)
-			ang = 0;
-		else
-			ang = atan2(x, y);
-
+		len = std::strlen(s);
+		str = new char[len + 1];
+		std::strcpy(str, s);
+		cout << num_strings << ": \"" << str << "\"- obiekt utworzony" << endl;
 	}
 
-	void Vector::setx()
+	Stringbad::Stringbad()
 	{
-		x = mag * cos(ang);
+		len = 4;
+		str = new char[4];
+		std::strcpy(str, "c++");
+		num_strings++;
+		cout << num_strings << ": \"" << str << "\"- obiekt domyslny utworzony" << endl;
+
 	}
 
-	void Vector::sety()
+	Stringbad::~Stringbad()
 	{
-		y = mag * sin(ang);
+		cout << "\"" << str << "\"- obiekt usuniety, ";
+		--num_strings;
+		cout << "sa jeszcze " << num_strings << ".\n";
+		delete[] str;
 	}
 
-	Vector::Vector()
+	std::ostream & operator<<(std::ostream &os, const Stringbad &st)
 	{
-		x = y = mag = ang = 0;
-	}
-
-	Vector::Vector(double n1, double n2, Mode form)
-	{
-		mode = form;
-		if (form = RECT)
-		{
-			x = n1;
-			y = n2;
-			setmag();
-			setang();
-		}
-		else if (form == POL)
-		{
-			mag = n1;
-			ang = n2/Rad_to_Reg;
-			setx();
-			sety();
-
-		}
-		else
-		{
-			cout << "niepoprawna wartosc trzeciego argumentu ";
-			cout << "zeruje wektor\n";
-			x = y = mag = ang = 0;
-			mode = RECT;
-		}
-	}
-
-	void Vector::reset(double n1, double n2, Mode form)
-	{
-
-		mode = form;
-		if (form == RECT)
-		{
-			x = n1;
-			y = n2;
-			setmag();
-			setang();
-		}
-		else if (form == POL)
-		{
-			mag = n1;
-			ang = n2 / Rad_to_Reg;
-			setx();
-			sety();
-		}
-
-		else
-		{
-			cout << "niepoprawna wartosc trzeciego argumentu ";
-			cout << "zeruje wektor\n";
-			x = y = mag = ang = 0;
-			mode = RECT;
-		}
-	}
-
-	Vector::~Vector()
-	{}
-	void Vector::polar_mode()
-	{
-		mode = POL;
-	}
-
-	void Vector::rect_mode()
-	{
-		mode = RECT;
-	}
-
-	Vector Vector::operator+(const Vector & b)const
-	{
-		return Vector(x + b.x, y + b.y);
-	}
-
-
-	Vector Vector::operator-(const Vector & b)const
-	{
-		return Vector(x - b.x, y - b.y);
-	}
-
-	Vector Vector::operator-()const
-	{
-		return Vector(-x, -y);
-	}
-
-	Vector Vector::operator*(double n)const
-	{
-		return Vector(n*x, n*y);
-	}
-
-
-	Vector operator*(double n, const Vector & a)
-	{
-		return Vector(a*n);
-	}
-
-	std::ostream & operator<<(std::ostream & os, const Vector & v)
-	{
-		if (v.mode == Vector::RECT)
-			os << "(x,y)=(" << v.x << "," << v.y << ")";
-		else if (v.mode == Vector::POL)
-		{
-			os << "(m.a) = (" << v.mag << ")";
-		}
-		else
-			os << "niepoprawny tryb reprezentacji wektora";
+		os << st.str;
 		return os;
 	}
-
-}
-
-
