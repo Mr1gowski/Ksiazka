@@ -11,13 +11,15 @@
 		Stringbad();
 		~Stringbad();
 		friend std::ostream & operator<<(std::ostream & os, const Stringbad &st);
+		//Stringbad & Stringbad::operator=(const Stringbad & );
+		//Stringbad::Stringbad(const Stringbad &st);
 		
 	private:
 		char *str;
 		int len;
 		static int num_strings;
 		
-	}
+	};
 
 
 #endif //  MYTIME_H_
