@@ -1,40 +1,51 @@
-
 #include <cstring>
 #include "stock00.h"
 using std::cout;
+using std::cin;
 using std::endl;
-int Stringbad::num_strings = 0;
 
-using namespace std;
 
-	Stringbad::Stringbad(const char* s)
+int String::num_strings = 0;
+
+int String::Howmany()
+{
+	return num_strings;			
+}
+
+
+	String::String(const char* s)
 	{
 		len = std::strlen(s);
 		str = new char[len + 1];
-		strcpy(str, s);
+		std::strcpy(str, s);
 		num_strings++;
-		cout << num_strings << ": \"" << str << "\"- obiekt utworzony" << endl;
+		
 	}
 
-	Stringbad::Stringbad()
+	String::String()
 	{
 		len = 4;
 		str = new char[4];
-		strcpy(str, "c++");
+		str[0] = '\0';
 		num_strings++;
-		cout << num_strings << ": \"" << str << "\"- obiekt domyslny utworzony" << endl;
+	
 
 	}
-
-	Stringbad::~Stringbad()
+	String::String(const String &st)
 	{
-		cout << "\"" << str << "\"- obiekt usuniety, ";
+		num_strings++;
+		len = st.len;
+		str = new char [len + 1];
+		std::strcpy(str, st.str);
+	}
+
+	String::~String()
+	{	
 		--num_strings;
-		cout << "sa jeszcze " << num_strings << ".\n";
 		delete[] str;
 	}
 
-	Stringbad & Stringbad::operator=(const Stringbad & st)
+	String & String::operator=(const String & st)
 	{
 		if (this == &st)
 			return *this;
@@ -45,18 +56,41 @@ using namespace std;
 		return *this;
 	}
 
-	std::ostream & operator<<(std::ostream &os, const Stringbad &st)
+	char & String::operator[](int i)
+	{
+		return str[i];
+	}
+
+	bool operator<(const String &st1, const String &st2)
+	{
+		return (std::strcmp(st1.str, st2.str) < 0);
+	}
+
+	bool operator>(const String &st1, const String &st2)
+	{
+		return st2 < st1;
+	}
+
+	bool operator==(const String &st1, const String st2)
+	{
+		return (std::strcmp(st1.str, st2.str) == 0);
+	}
+
+	ostream & operator<<(ostream &os, const String &st)
 	{
 		os << st.str;
 		return os;
 	}
 
-
-	Stringbad::Stringbad(const Stringbad &st)
+	istream & operator>>(istream &is, String &st)
 	{
-		num_strings++;
-		len = st.len;
-		str = new char[len + 1];
-		std::strcpy(str, st.str);
-		cout << num_strings << " " << str << " obiekt utw";
+		char temp[String::CINLIM];
+		is.get(temp, String::CINLIM);
+		if (is)
+			st = temp;
+		while (is &&is.get() != '\n')
+			continue;
+		return is;
 	}
+
+
