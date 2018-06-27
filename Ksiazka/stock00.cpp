@@ -1,4 +1,6 @@
+#include "stdafx.h"
 #include <cstring>
+#include <string.h>
 #include "stock00.h"
 using std::cout;
 using std::cin;

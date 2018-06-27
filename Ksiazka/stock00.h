@@ -1,3 +1,4 @@
+
 #pragma once
 #ifndef  STOCK00_H_
 #define  STOCK00_H_
