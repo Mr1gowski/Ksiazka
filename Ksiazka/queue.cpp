@@ -4,7 +4,7 @@
 
 Queue::Queue(int qs) :qsize(qs)
 {
-	front = rear = NULL;
+	front = rear = nullptr;
 	items = 0;
 }
 
