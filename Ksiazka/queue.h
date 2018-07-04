@@ -1,44 +1,37 @@
 #ifndef QUEUE_H_
 #define QUEUE_H_
+#include <string>
+using std::string;
 
-class Customer
+class TableTenisPlayer
+{
+private:
+	string firstname;
+	string lastname;
+	bool hasTable;
+public:
+	TableTenisPlayer(const string & fn = "brak",
+		const string &ln = "brak", bool ht = false);
+	void Name() const;
+	bool HasTable() const { return hasTable; };
+	void ResetTable(bool v) { hasTable = v; };
+
+};
+
+class RatedPlayer : public TableTenisPlayer
 {
 public:
-	Customer() { arrive = processtime = 0; }
-	void set(long when);
-	long when() const { return arrive; }
-	int ptime() const { return processtime; }
+	RatedPlayer(unsigned int r = 0, const string &fn = "brak",
+		const string &ln = "brak", bool ht = false);
+	RatedPlayer(unsigned int r, const TableTenisPlayer &tp);
+	unsigned int Rating() const { return rating; }
+	void ResetRating(unsigned int r) { rating = r; }
 
 
 private:
-	long arrive;
-	int processtime;
+	unsigned int rating;
 };
 
-
-typedef Customer Item;
-
-class Queue
-{
-public:
-	Queue(int qs = Q_size);
-	~Queue();
-	bool isempty() const;
-	bool isfull() const;
-	int queuecount() const;
-	bool enqueue(const Item &item);
-	bool dequeue(Item &item);
-private:
-	struct Node { Item item; struct Node * next; };
-	enum {Q_size=10};
-	Node *front;
-	Node *rear;
-	int items;
-	const int qsize;
-	Queue(const Queue & q): qsize(0) {}
-	Queue &operator=(const Queue &q) { return *this; }
-
-};
 
 
 #endif // !QUEUE_H_
