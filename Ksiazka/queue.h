@@ -1,37 +1,38 @@
 #ifndef QUEUE_H_
 #define QUEUE_H_
 #include <string>
-using std::string;
 
-class TableTenisPlayer
+class Brass
 {
 private:
-	string firstname;
-	string lastname;
-	bool hasTable;
+	std::string fullname;
+	long accNum;
+	double balance;
 public:
-	TableTenisPlayer(const string & fn = "brak",
-		const string &ln = "brak", bool ht = false);
-	void Name() const;
-	bool HasTable() const { return hasTable; };
-	void ResetTable(bool v) { hasTable = v; };
-
+	Brass(const std::string &s = "brak", long an = -1, double bal = 0.0);
+	void Deposit(double amt);
+	virtual void Withdraw(double amt);
+	double Balance() const;
+	virtual void ViewAc() const;
+	virtual ~Brass() {}
 };
 
-class RatedPlayer : public TableTenisPlayer
+class BrassPluss : public Brass
 {
-public:
-	RatedPlayer(unsigned int r = 0, const string &fn = "brak",
-		const string &ln = "brak", bool ht = false);
-	RatedPlayer(unsigned int r, const TableTenisPlayer &tp);
-	unsigned int Rating() const { return rating; }
-	void ResetRating(unsigned int r) { rating = r; }
-
-
 private:
-	unsigned int rating;
+	double maxloan;
+	double rate;
+	double owesbank;
+public:
+	BrassPluss(const std::string & s = "brak", long an = -1, double bal = 0.0,
+		double ml = 2000, double r = 0.11125);
+	BrassPluss(const Brass & ba, double ml = 2000, double r = 0.11125);
+	virtual void ViewAc() const;
+	virtual void Withdraw(double amt);
+	void ResetMax(double m) {maxloan = m;}
+	void ResetRate(double r) { rate = r; }
+	void ResetOwes() { owesbank = 0; }
 };
-
 
 
 #endif // !QUEUE_H_
