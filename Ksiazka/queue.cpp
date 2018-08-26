@@ -1,112 +1,98 @@
-#include <iostream>
 #include "queue.h"
+#include <cstring>
 
-using std::cout;
-using std::ios_base;
-using std::endl;
-
-using std::string;
-
-AcctABC::AcctABC(const string &s, long an, double bal)
+baseDMA::baseDMA(const char*l, int r)
 {
-	fullName = s;
-	acctNum = an;
-	balance = bal;
+	label = new char[std::strlen(l) + 1];
+	std::strcpy(label, l);
+	rating = r;
 }
 
-void AcctABC::Deposit(double amt)
+baseDMA::baseDMA(const baseDMA &rs)
 {
-	if (amt<0)
-	{
-		cout << "nie mozesz wplacic ujemnej kwoty\n";
-	}
-	else
-		balance += amt;
+	label = new char[std::strlen(rs.label) + 1];
+	std::strcpy(label, rs.label);
+	rating = rs.rating;
 }
 
-void AcctABC::Withdraw(double amt)
+baseDMA::~baseDMA()
 {
-	balance -= amt;
+	delete[] label;
 }
 
-AcctABC::Formatting AcctABC::SetFormat() const
+baseDMA & baseDMA::operator=(const baseDMA &rs)
 {
-	Formatting f;
-	f.flag =
-		cout.setf(ios_base::fixed, ios_base::floatfield);
-	f.pr = cout.precision(2);
-	return f;
+	if (this == &rs)
+		return *this;
+	delete[] label;
+	label = new char[std::strlen(rs.label) + 1];
+	rating = rs.rating;
+	return *this;
 }
 
-void AcctABC::Restore(Formatting &f) const
+std::ostream & operator<<(std::ostream &os, const baseDMA &rs)
 {
-	cout.setf(f.flag, ios_base::floatfield);
-	cout.precision(f.pr);
+	os << "etykieta " << rs.label<<std::endl;
+	os << "klasa " << rs.rating << std::endl;
+	return os;
 }
 
-void Brass::Withdraw(double amt)
+lacksDMA::lacksDMA(const char *c, const char *l, int r) :baseDMA(l, r)
 {
-	if (amt < 0)
-		cout << "nie mozna wplacic ujemnej kwoty\n";
-	else if (amt <= Balance())
-		AcctABC::Withdraw(amt);
-	else
-		cout << "zadana wartosc  " << amt
-		<< " zl przekracza dostepne srodki\n";
+	std::strncpy(color, c, 39);
+	color[39] = '\0';
 }
 
-void Brass::ViewAcct() const
+lacksDMA::lacksDMA(const char *c, const baseDMA &rs):baseDMA(rs)
 {
-	Formatting f = SetFormat();
-	cout << "wlasciciel " << FullName() << endl;
-	cout << " nr rachunku " << AcctNum() << endl;
-	cout << " stan konta " << Balance() << endl;
-	Restore(f);
-
-
+	std::strncpy(color, c, COL_LEN - 1);
+	color[COL_LEN-1] = '\0';
 }
 
-BrassPlus::BrassPlus(const string &s, long an, double bal,
-	double ml, double r) :AcctABC(s, an, bal)
+std::ostream & operator<<(std::ostream &os, const lacksDMA &ls)
 {
-	maxLoan = ml;
-	owesBank = 0;
-	rate = r;
-
+	os << (const baseDMA &)ls;
+	os << "kolor " << ls.color << std::endl;
+	return os;
 }
 
-
-void BrassPlus::ViewAcct() const
+hasDMA::hasDMA(const char *s, const char *l, int r) : baseDMA(l, r)
 {
-	Formatting f = SetFormat();
-	cout << "wlasciciel " << FullName() << endl;
-	cout << "nr rachunku " << AcctNum() << endl;
-	cout << "saldo " << Balance() << endl;
-	cout << "limit debetu " << maxLoan << " zl" << endl;
-	cout << "kwota zadluzenia " << owesBank << endl;
-	cout.precision(3);
-	cout << "stopa oprocentowania " << 100 * rate << "%\n";
-	Restore(f);
+	style = new char[std::strlen(s) + 1];
+	std::strcpy(style, s);
 }
 
-void BrassPlus::Withdraw(double amt)
+hasDMA::hasDMA(const char *s, const baseDMA & rs) :baseDMA(rs)
 {
-	Formatting f = SetFormat();
+	style = new char[std::strlen(s) + 1];
+	std::strcpy(style, s);
+}
 
-	double bal = Balance();
-	if (amt <= bal)
-		AcctABC::Withdraw(amt);
-	else if (amt <= bal + maxLoan - owesBank)
-	{
-		double advance = amt - bal;
-		owesBank += advance * (1.0 + rate);
-		cout << "zadluzenie faktyczne " << advance << " zl\n";
-		cout << "odsetki " << advance * rate << " zl\n";
-		Deposit(advance);
-		AcctABC::Withdraw(amt);
+hasDMA::hasDMA(const hasDMA &hs) : baseDMA(hs)
+{
+	style = new char[std::strlen(hs.style) + 1];
+	std::strcpy(style, hs.style);
+}
 
-	}
-	else
-		cout << "przekroczony limit debetu";
-	Restore(f);
+hasDMA::~hasDMA()
+{
+	delete[] style;
+}
+
+hasDMA &hasDMA::operator=(const hasDMA &hs)
+{
+	if (this == &hs)
+		return *this;
+	baseDMA::operator=(hs);
+	delete[]style;
+	style = new char[std::strlen(hs.style) + 1];
+	std::strcpy(style, hs.style);
+	return *this;
+}
+
+std::ostream & operator<<(std::ostream &os, const hasDMA &hs)
+{
+	os << (const baseDMA &)hs;
+	os << "styl " << hs.style<<std::endl;
+	return os;
 }

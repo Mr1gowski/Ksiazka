@@ -1,58 +1,42 @@
 #ifndef  STOCK00_H_
 #define  STOCK00_H_
 #include <iostream>
-#include <string>
 
-class AcctABC
+class baseDMA
 {
 private:
-	std::string fullName;
-	long acctNum;
-	double balance;
-protected:
-	struct Formatting
-	{
-		std::ios_base::fmtflags flag;
-		std::streamsize pr;
-	};
-	const std::string &FullName() const { return fullName; }
-	long AcctNum() const { return acctNum; }
-	Formatting SetFormat() const;
-	void Restore(Formatting &f) const;
+	char *label;
+	int rating;
 public:
-	AcctABC(const std::string &s = "brak", long an = -1, double bal = 0.0);
-	void Deposit(double amt);
-	virtual void Withdraw(double amt) = 0;
-	double Balance() const { return balance; }
-	virtual void ViewAcct() const = 0;
-	virtual ~AcctABC() {};
+	baseDMA(const char*l = "brak", int r = 0);
+	baseDMA(const baseDMA &rs);
+	virtual ~baseDMA();
+	baseDMA & operator=(const baseDMA &rs);
+	friend std::ostream &operator<<(std::ostream &os, const baseDMA &rs);
 };
 
-class Brass :public AcctABC
-{
-public:
-	Brass(const std::string &s = "brak", long an = -1,
-		double bal = 0) :AcctABC(s, an, bal) {}
-	virtual void Withdraw(double amt);
-	virtual void ViewAcct() const;
-	virtual ~Brass();
-};
-
-
-class BrassPlus : public AcctABC
+class lacksDMA :public baseDMA
 {
 private:
-	double maxLoan;
-	double rate;
-	double owesBank;
+	enum {COL_LEN=40};
+	char color[COL_LEN];
 public:
-	BrassPlus(const std::string &s = "brak", long an = -1,
-		double bal = 0, double ml = 500, double r = 0.10);
-	BrassPlus(const Brass &ba, double ml = 500, double r = 0.1);
-	virtual void ViewAcct() const;
-	virtual void Withdraw(double amt);
-		void ResetMax(double m) { maxLoan = m; }
-	void ResetRate(double r) { rate = r; }
-	void ResetOwes() { owesBank = 0; }
+	lacksDMA(const char *c = "brak", const char *l = "brak", int r = 0);
+	lacksDMA(const char *c, const baseDMA & rs);
+	friend std::ostream & operator<<(std::ostream &os, const lacksDMA &rs);
 };
+
+class hasDMA :public baseDMA
+{
+private:
+	char *style;
+public:
+	hasDMA(const char *s = "brak", const char *l = "brak", int r = 0);
+	hasDMA(const char*s, const baseDMA &rs);
+	hasDMA(const hasDMA &hs);
+	~hasDMA();
+	hasDMA &operator=(const hasDMA &rs);
+	friend std::ostream &operator<<(std::ostream &os, const hasDMA &rs);
+};
+
 #endif 
