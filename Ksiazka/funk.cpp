@@ -1,52 +1,11 @@
-#include<iostream>
 #include "ksiazka.h"
+#include <iostream>
 
-using std::endl;
-using std::cout;
-using std::cin;
+Tabletenisplayer::Tabletenisplayer(const string & fn,
+	const string & ln, bool ht) :firstname(fn), lastname(ln), hastable(ht) {}
 
-
-int front(int z[], int d)
+void Tabletenisplayer::Name() const
 {
-	int i = 0;
-	int ujemny_zysk = z[i];
-	for (i = 0; i < d; i++)
-	{
-
-		if (ujemny_zysk + z[i + 1] < 0)
-		{
-			ujemny_zysk += z[i + 1];
-		}
-		else
-		{
-			break;
-		}
-
-	}
-	//cout << "ujemny zysk z poczatku wystepuje do " << i << endl;
-
-	return i;
+	std::cout << lastname << ", " << firstname;
 }
 
-
-int back(int z[], int d)
-{
-	int i = 0;
-	int ujemny_zysk = z[d];
-	for (i = 0; i < d; i++)
-	{
-
-		if (ujemny_zysk + z[d - 1] < 0)
-		{
-			ujemny_zysk += z[d - 1];
-			d -= 1;
-		}
-		else
-		{
-			break;
-		}
-
-	}
-	//cout << "ujemny zysk z konca wystepuje do " << d << endl;
-	return d;
-}

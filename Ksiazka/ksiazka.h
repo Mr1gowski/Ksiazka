@@ -1,9 +1,22 @@
-#pragma once
+#ifndef TEBLETEN_H_
+#define TABKETEN_H_
+#include <string>
+using std::string;
 
-#include <iostream>
-using std::endl;
-using std::cout;
-using std::cin;
+class Tabletenisplayer
+{
+public:
+	
+	Tabletenisplayer(const string &fn = "brak", const string &ln = "brak", bool ht = false);
+	void Name() const;
+	bool Hastable() const { return hastable; }
+	void Resettable(bool v) { hastable = v; }
+	
+private:
+	string firstname;
+	string lastname;
+	bool hastable;
+};
 
-int front(int z[], int d);
-int back(int z[], int d);
+
+#endif 
