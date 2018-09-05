@@ -1,38 +1,39 @@
-#ifndef QUEUE_H_
-#define QUEUE_H_
-#include <string>
+#ifndef BRASS_H_
+#define BRASS_H_
+#include<string>
 
 class Brass
 {
 private:
-	std::string fullname;
+	std::string fullName;
 	long accNum;
 	double balance;
-public:
-	Brass(const std::string &s = "brak", long an = -1, double bal = 0.0);
+public: 
+	Brass(const std::string &s = "brak", long an = -1,
+	double bal = 0.0);
 	void Deposit(double amt);
 	virtual void Withdraw(double amt);
 	double Balance() const;
-	virtual void ViewAc() const;
+	virtual void ViewAcct() const;
 	virtual ~Brass() {}
 };
 
-class BrassPluss : public Brass
+class BrassPlus :public Brass
 {
 private:
-	double maxloan;
+	double maxLoan;
 	double rate;
-	double owesbank;
+	double owesBank;
 public:
-	BrassPluss(const std::string & s = "brak", long an = -1, double bal = 0.0,
-		double ml = 2000, double r = 0.11125);
-	BrassPluss(const Brass & ba, double ml = 2000, double r = 0.11125);
-	virtual void ViewAc() const;
+	BrassPlus(const std::string &s = "brak", long an = -1,
+		double bal = 0.0, double ml = 2000,
+		double r = 0.11125);
+	BrassPlus(const Brass &ba, double ml = 2000, double r = 0.11125);
+	virtual void ViewAcct() const;
 	virtual void Withdraw(double amt);
-	void ResetMax(double m) {maxloan = m;}
+	void ResetMax(double m) { maxLoan = m; }
 	void ResetRate(double r) { rate = r; }
-	void ResetOwes() { owesbank = 0; }
+	void ResetOwes() { owesBank = 0; }
+
 };
-
-
-#endif // !QUEUE_H_
+#endif // !BRASS_H_
