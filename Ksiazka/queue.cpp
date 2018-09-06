@@ -1,123 +1,116 @@
 #include <iostream>
 #include "queue.h"
-using std::cout;
 using std::endl;
-using std::string;
-typedef std::ios_base::fmtflags format;
-typedef std::streamsize precis;
-format setFormat();
-void restore(format f, precis p);
+using std::ios_base;
+using std::cout;
 
-Brass::Brass(const string &s, long an, double bal)
+using std::string;
+
+AcctABC::AcctABC(const string &s, long an, double bal)
 {
 	fullName = s;
-	accNum = an;
+	acctNum = an;
 	balance = bal;
 }
 
-void Brass::Deposit(double amt)
+void AcctABC::Deposit(double amt)
 {
 	if (amt < 0)
-	{
-		cout << "nie mozna wplacic ujemnej kwoty;"
-			<< "wplata zostala anulowana.\n";
-	}
+		cout << "nie mozesz wplacic ujemnej kwoty; "
+		<< " operacja anulowana!\n";
 	else
 		balance += amt;
+
 }
+
+void AcctABC::Withdraw(double amt)
+{
+	balance -= amt;	
+}
+
+AcctABC::Formatting AcctABC::SetFormat() const
+{
+	Formatting f;
+	f.flag =
+		cout.setf(ios_base::fixed, ios_base::floatfield);
+	f.pr = cout.precision(2);
+	return f;
+}
+
+void AcctABC::Restore(Formatting &f) const
+{
+	cout.setf(ios_base::fixed, ios_base::floatfield);
+	cout.precision(f.pr);
+}
+
 
 void Brass::Withdraw(double amt)
 {
-	format initialState = setFormat();
-	precis prec = cout.precision(2);
 	if (amt < 0)
-	{
-		cout << "nie mozna wyplacic ujemnej kwoty;"
-			<< "wyplata anulowana,\n";
-	}
-	else if (amt <= balance)
-		balance - +amt;
+		cout << "nie mozna wyplacic ujemnej kwoty; "
+		<< "operacja anulowana!\n";
+	else if (amt <= Balance())
+		AcctABC::Withdraw(amt);
 	else
-		cout << "zadana suma " << amt
-		<< "zl przekracza dostepne srodki.\n"
-		<< "wyplata anulowana.\n";
-	restore(initialState, prec);
+		cout << "zadana wartosc " << amt << "zl przekracza dostepne srodki ;"
+		<< "operacja anulowana!\n";
 }
 
-double Brass::Balance() const
-{
-	return balance;
-}
 
 void Brass::ViewAcct() const
 {
-	format initialState = setFormat();
-	precis prec = cout.precision(2);
-	cout << "klient: " << fullName << endl;
-	cout << "numer rachunku: " << accNum << endl;
-	cout << " stan konta: " << balance <<"zl"<< endl;
-	restore(initialState, prec);
+	Formatting f = SetFormat();
+	cout << "wlasciciel rachunku brass: " << FullName() << endl;
+	cout << "nr rachunku: " << AcctNum() << endl;
+	cout << "stan konta: " << Balance() <<"zl"<< endl;
+	Restore(f);
 }
 
 
-BrassPlus::BrassPlus(const string &s, long an, double bal,
-	double ml, double r) : Brass(s, an, bal)
+BrassPlus::BrassPlus(const string &s, long an, double bal, double ml, double r) : AcctABC(s, an, bal)
 {
 	maxLoan = ml;
 	owesBank = 0.0;
 	rate = r;
 }
 
- BrassPlus::BrassPlus(const Brass &ba, double ml, double r) :Brass(ba)
+BrassPlus::BrassPlus(const Brass & ba, double ml, double r) : AcctABC(ba)
 {
 	maxLoan = ml;
 	owesBank = 0.0;
 	rate = r;
 }
 
- void BrassPlus :: ViewAcct() const
- {
-	 format initialState = setFormat();
-	 precis prec = cout.precision(2);
+void BrassPlus::ViewAcct() const
+{
+	Formatting f = SetFormat();
+	cout << "wlasciciel rachunku brassplus: " << FullName() << endl;
+	cout << "numer rachunku: " << AcctNum() << endl;
+	cout << "stan konta: " << Balance() << endl;
+	cout << "limit debetu: " << maxLoan << " zl" << endl;
+	cout << "kwota zadluzenia: " << owesBank << " zl" << endl;
+	cout.precision(3);
+	cout << "stopa oprocentowania: " << 100 * rate << "%\n";
+	Restore(f);
+}
 
-	 Brass::ViewAcct();
-	 cout << "limit debetu: " << maxLoan << " zl" << endl;
-	 cout << "kwota zadluzenia: " << owesBank << " zl" << endl;
-	 cout.precision(3);
-	 cout << "stopa oprocentowania: " << 100 * rate << "%\n";
-	 restore(initialState, prec);
- }
+void BrassPlus::Withdraw(double amt)
+{
+	Formatting f = SetFormat();
+	double bal = Balance();
+	if (amt <= bal)
+		AcctABC::Withdraw(amt);
+	else if (amt <= bal + maxLoan - owesBank)
+	{
+		double advance = amt - bal;
+		owesBank += advance * (1.0 + rate);
+		cout << "zadluzenie faktyczne: " << advance << " zl" << endl;
+		cout << "odsetki: " << advance * rate << " zl" << endl;
+		Deposit(advance);
+		AcctABC::Withdraw(amt);
+	}
 
- void BrassPlus::Withdraw(double amt)
- {
-	 format initialState = setFormat();
-	 precis prec = cout.precision(2);
-
-	 double bal = Balance();
-	 if (amt <= bal)
-		 Brass::Withdraw(amt);
-	 else if (amt <= bal + maxLoan - owesBank)
-	 {
-		 double advance = amt - bal;
-		 owesBank += advance * (1.0 + rate);
-		 cout << "zadluzenie faktyczne: " << advance << " zl" << endl;
-		 cout << "odsetki: " << advance * rate << "zl" << endl;
-		 Deposit(advance);
-		 Brass::Withdraw(amt);
-	 }
-	 else
-		 cout << "przekroczony limit debetu. operacja anulowana.\n";
-	 restore(initialState, prec);
- }
-
- format setFormat()
- {
-	 return cout.setf(std::ios_base::fixed,
-		 std::ios_base::floatfield);
- }
-
- void restore(format f, precis p)
- {
-	 cout.setf(f, std::ios_base::floatfield);
-	 cout.precision(p);
- }
+	else
+		cout << "przekroczony limit debetu. operacja anulowana!\n";
+	Restore(f);
+}
