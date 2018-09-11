@@ -2,44 +2,34 @@
 #define DMA_H_
 #include <iostream>
 
-class baseDMA
+class Cd
 {
 private:
-	char *label;
-	int rating;
+	char performens[50];
+	char label[20];
+	int selection;
+	double playtime;
 public:
-	baseDMA(const char *l = "brak", int r = 0);
-	baseDMA(const baseDMA &rs);
-	virtual ~baseDMA();
-	baseDMA& operator=(const baseDMA &rs);
-	friend std::ostream & operator<<(std::ostream &os, const baseDMA &rs);
-
+	Cd( char *s1,char *s2, int n, double x);
+	Cd(const Cd &d);
+	Cd();
+	~Cd();
+	void Report() const;// wyswietla info o danych
+	Cd & operator=(const Cd &d);
 
 };
 
-class lacksDMA : public baseDMA
+class Classic : public Cd
 {
 private:
-	enum { COL_LEN = 40 };;
-	char color[COL_LEN];
+	char maintitle[40];
 public:
-	lacksDMA(const char *c = "brak", const char *l = "brak", int r = 0);
-	lacksDMA(const char *c, const baseDMA &rs);
-	friend std::ostream &operator<<(std::ostream &os, const lacksDMA &rs);
+	Classic(char *s1, char *s2,
+		char *m, int n, double x): Cd(*s1,*s2,*maintitle,n,x);
+	Classic();
+	~Classic();
+	void Report() const;
+	Classic & operator=(const Classic &dc);
+	friend std::ostream & operator<<(std::ostream &os, const Classic &rs);
 };
-
-
-class hasDMA :public baseDMA
-{
-private:
-	char *style;
-public:
-	hasDMA(const char *s = "brak", const char *l= "brak", int r = 0);
-	hasDMA(const char *s, const baseDMA &rs);
-	hasDMA(const hasDMA &hs);
-	~hasDMA();
-	hasDMA &operator=(const hasDMA &rs);
-		friend std::ostream &operator<<(std::ostream &os, const hasDMA &rs);
-};
-
 #endif // !DMA_H_

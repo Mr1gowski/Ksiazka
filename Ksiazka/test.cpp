@@ -1,42 +1,76 @@
 #include "test.h"	
 #include<cstring>
 
-baseDMA::baseDMA(const char *l, int r)
+
+
+Cd::Cd(char *s1, char *s2, int n, double x)
 {
-	label = new char[std::strlen(l) + 1];
-	std::strcpy(label, l);
-	rating = r;
+	
+	std::strcpy(performens, s1);
+	std::strcpy(label, s2);
+	selection = n;
+	playtime = x;
 }
 
-baseDMA::baseDMA(const baseDMA &rs)
+Cd::Cd(const Cd &d)
 {
-	label = new char[std::strlen(rs.label) + 1];
-	std::strcpy(label, rs.label);
-	rating = rs.rating;
-
+	*performens = *d.performens;
+	*label = *d.label;
+	selection = d.selection;
+	playtime = d.playtime;
 }
 
 
-baseDMA::~baseDMA()
-{
-	delete[] label;
-}
+Cd::~Cd() {};
 
-baseDMA & baseDMA::operator=(const baseDMA& rs)
+void Cd::Report() const
 {
-	if (this == &rs)
+	std::cout << "nazwa zespolu: " << performens << std::endl;
+	std::cout << "nazwa albumu: " << label << std::endl;
+	std::cout << "ilosc utworow: " << selection << std::endl;
+	std::cout << "czas trwania: " << playtime << std::endl;
+
+}
+Cd& Cd::operator=(const Cd &d)
+{
+	if (this == &d)
+		return *this;
+	std::strcpy(performens, d.performens);
+	std::strcpy(label, d.label);
+	selection = d.selection;
+	playtime = d.playtime;
 	return *this;
-	delete[] label;
-	label = new char[std::strlen(rs.label) + 1];
-	std::strcpy(label, rs.label);
-	rating = rs.rating;
-	return *this;
 }
 
-std::ostream & operator<<(std::ostream &os, const baseDMA &rs)
+Classic::Classic(char *s1, char *s2,
+	char *m, int n, double x) : Cd(s1, s2, n, x)
 {
-	os << "etykietka: " << rs.label << std::endl;
-	os << "klasa: " << rs.rating << std::endl;
+	std::strcpy(maintitle, m);
+}
+
+ void Classic::Report() const
+{
+	std::cout << "nazwa zespolu: " << performens << std::endl;
+	std::cout << "nazwa albumu: " << label << std::endl;
+	std::cout << "ilosc utworow: " << selection << std::endl;
+	std::cout << "czas trwania: " << playtime << std::endl;
+}
+
+
+Classic & Classic::operator=(const Classic &dc)
+{
+	if (this == &dc)
+		return *this;
+	performens
+}
+
+
+
+std::ostream & operator<<(std::ostream &os, const Classic &rs)
+{
+
+	os << "nazwa piosenki: " << rs.maintitle << std::endl;
+
 	return os;
 }
 
